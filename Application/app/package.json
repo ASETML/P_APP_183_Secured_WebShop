@@ -8,6 +8,8 @@
   },
   "dependencies": {
     "express": "^4.19.1",
-    "nodemon": "^3.1.0"
+    "nodemon": "^3.1.0",
+    "ejs": "^3.1.10",
+    "mysql2": "^3.12.0"
   }
 }

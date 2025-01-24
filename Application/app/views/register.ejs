@@ -1,0 +1,21 @@
+<%- include( "header.ejs" )%>
+<main>
+  <h1>WebShop</h1>
+  <h2>Créer votre compte</h2>
+  <form action="/user/register" method="post">
+    <label for="username">Nom d'utilisateur</label>
+    <input type="text" id="username" name="username" required />
+    <label for="password">Mot de passe</label>
+    <input type="password" id="password" name="password" required />
+    <label for="password">Confirmer le mot de passe</label>
+    <input
+      type="password"
+      id="confirmPassword"
+      name="confirmPassword"
+      required
+    />
+    <input type="submit" id="submit" value="Créer votre compte" />
+  </form>
+  <a href="./login">Connectez-vous à votre compte</a>
+</main>
+<%- include( "footer.ejs" )%>
