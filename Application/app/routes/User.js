@@ -1,3 +1,5 @@
+const crypto = require("crypto");
+const db = require("../database/database");
 const express = require("express");
 const router = express.Router();
 const controller = require("../controllers/UserController");
@@ -20,24 +22,29 @@ router.get("/register", (req, res) => {
 
 router.post("/register", (req, res) => {
   console.log(req.body);
-  // Get the client
-  const mysql = require("mysql2");
 
-  // Create the connection to database
-  const connection = mysql.createConnection({
-    host: "localhost",
-    port: "6033",
-    user: "root",
-    password: "root",
-    database: "mysql",
-  });
+  if (req.body.password == req.body.confirmPassword) {
+    //Génération du sel
+    const salt = crypto.randomBytes(8).toString("hex");
+    console.log("salt: " + salt);
 
-  // Using placeholders
-  connection.query("SELECT * FROM users", function (err, results, fields) {
-    console.log(results); // results contains rows returned by server
-    console.log(fields); // fields contains extra meta data about results, if available
-  });
+    //Hachage du mot de passe
+    const hash = crypto.hash("sha256", req.body.password + salt);
+    console.log("hash: " + hash);
 
+    db.connect();
+
+    db.query(
+      "INSERT INTO t_users (username, password, salt) VALUES (?, ?, ?)",
+      [req.body.username, hash, salt],
+      function (error, results, fields) {
+        if (error) throw error;
+        console.log("The solution is: ", results);
+      }
+    );
+
+    db.end();
+  }
   res.render("user", { accountName: req.body.username });
 });
 
