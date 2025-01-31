@@ -29,7 +29,10 @@ router.post("/register", (req, res) => {
     console.log("salt: " + salt);
 
     //Hachage du mot de passe
-    const hash = crypto.hash("sha256", req.body.password + salt);
+    const hash = crypto.hash(
+      "sha256",
+      req.body.password + salt + process.env.PEPPER
+    );
     console.log("hash: " + hash);
 
     db.connect();
