@@ -1,4 +1,4 @@
 node_modules/
 *.docx
 *.xlsm
-*.env
+*/.env
