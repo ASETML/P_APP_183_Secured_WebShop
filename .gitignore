@@ -2,3 +2,4 @@ node_modules/
 *.docx
 *.xlsm
 */.env
+Application/app/.env

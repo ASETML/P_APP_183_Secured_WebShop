@@ -11,8 +11,11 @@ app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
 
 const userRoute = require("./routes/User");
-
 app.use("/user", userRoute);
+
+const authRoute = require("./routes/Auth");
+
+app.use("/", authRoute);
 
 // Démarrage du serveur
 app.listen(8080, () => {

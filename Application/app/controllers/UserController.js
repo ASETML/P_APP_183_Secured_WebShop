@@ -5,7 +5,6 @@ module.exports = {
       try {
         console.log(token);
         const decodedToken = jsonwebtoken.verify(token, process.env.SECRETKEY);
-        console.log(decodedToken);
         return res.status(200).json({ user: decodedToken.username });
       } catch (error) {
         return res.status(401).json({ error: error });
