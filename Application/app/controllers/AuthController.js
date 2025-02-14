@@ -3,6 +3,7 @@ const db = require("../database/database");
 const jsonwebtoken = require("jsonwebtoken");
 
 module.exports = {
+  //Inscription
   register: (req, res) => {
     console.log(req.body);
 
@@ -19,19 +20,20 @@ module.exports = {
       console.log("hash: " + hash);
 
       db.connect();
-
       db.query(
         "INSERT INTO t_users (username, password, salt) VALUES (?, ?, ?)",
         [req.body.username, hash, salt],
-        function (error, results, fields) {
-          if (error) throw error;
-          console.log("The solution is: ", results);
+        function (error) {
+          if (error.code == "ER_DUP_ENTRY") {
+            console.log("Le username existe déjà");
+          }
         }
       );
     }
     res.render("user", { accountName: req.body.username });
   },
 
+  //Connexion
   login: (req, res) => {
     //Récupération des credentials
     console.log(req.body);
