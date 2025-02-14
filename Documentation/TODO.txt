@@ -1,0 +1,6 @@
+Token dans Cookie
+Middleware auth
+Déplacer token dans header
+Rapport : analyse, conceptualisation, réalisation, test, évaluation
+JDT : tâches et pas juste des catégories
+Eco : procédure stockée/try catch : vérifier si l'utilisateur existe déjà
