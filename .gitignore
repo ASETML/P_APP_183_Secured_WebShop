@@ -3,3 +3,4 @@ node_modules/
 *.xlsm
 */.env
 Application/app/.env
+DB/LoopingImage.jpg

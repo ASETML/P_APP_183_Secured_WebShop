@@ -1,10 +1,14 @@
 const express = require("express");
+const cookieParser = require("cookie-parser");
 require("dotenv").config();
 const app = express();
 
 app.use(express.json());
 //Middleware qui rempli req.body
 app.use(express.urlencoded());
+
+//Middleware pour les cookies
+app.use(cookieParser());
 
 app.use(express.static(__dirname + "/public"));
 
