@@ -21,6 +21,17 @@ const authRoute = require("./routes/Auth");
 
 app.use("/", authRoute);
 
+app.get("/", (req, res) => {
+  res.redirect("/login");
+});
+
+app.get("/admin", (req, res) => {
+  res.render("admin", {
+    accountName: "",
+    userList: [{ a: 1 }, { b: 2 }, { c: 3 }],
+  });
+});
+
 // Démarrage du serveur
 app.listen(8080, () => {
   console.log("Server running on port 8080");

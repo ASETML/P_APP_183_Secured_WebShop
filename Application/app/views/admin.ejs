@@ -1,0 +1,15 @@
+<%- include( "header.ejs" )%>
+<h1>Admin</h1>
+<table>
+  <tr>
+    <td>ID</td>
+    <td>UserName</td>
+  </tr>
+  <% for (const user of userList) { %>
+  <tr>
+    <td><%= user.users_id %></td>
+    <td><%= user.username %></td>
+  </tr>
+  <% } %>
+</table>
+<%- include( "footer.ejs")%>
