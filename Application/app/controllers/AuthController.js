@@ -24,13 +24,16 @@ module.exports = {
         "INSERT INTO t_users (username, password, salt) VALUES (?, ?, ?)",
         [req.body.username, hash, salt],
         function (error) {
-          if (error.code == "ER_DUP_ENTRY") {
-            console.log("Le username existe déjà");
-          }
+          console.log(error);
+          try {
+            if (error.code == "ER_DUP_ENTRY") {
+              console.log("Le username existe déjà");
+            }
+          } catch (err) {}
+          return res.redirect("/login");
         }
       );
     }
-    res.render("user", { accountName: req.body.username });
   },
 
   //Connexion
@@ -45,7 +48,7 @@ module.exports = {
     //Récupérations des hashs dans la DB
     db.connect();
     db.query(
-      "SELECT password, salt FROM t_users WHERE username = ?",
+      "SELECT users_id, password, salt FROM t_users WHERE username = ?",
       [username],
       function (error, results, fields) {
         if (error) throw error;
@@ -66,7 +69,7 @@ module.exports = {
           if (toCheck == passwordHash) {
             //Signature du token
             const token = jsonwebtoken.sign(
-              { username: username },
+              { username: username, id: results[0].users_id },
               process.env.SECRETKEY,
               {
                 algorithm: "HS512",
@@ -74,7 +77,8 @@ module.exports = {
               }
             );
 
-            res.status(200).json({ token: token });
+            res.cookie("token", token, { expire: Date.now() + 3600 });
+            res.redirect("user/" + results[0].users_id);
           } else {
             res.status(401).json({ error: "Invalid username or password" });
           }
