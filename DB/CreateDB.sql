@@ -6,6 +6,7 @@ CREATE TABLE t_users(
    username VARCHAR(50) NOT NULL,
    password VARCHAR(64) NOT NULL,
    salt VARCHAR(16) NOT NULL,
+   admin BOOLEAN NOT NULL,
    PRIMARY KEY(users_id),
    UNIQUE(username)
 );
