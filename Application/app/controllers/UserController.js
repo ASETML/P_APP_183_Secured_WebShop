@@ -5,10 +5,10 @@ module.exports = {
   get: (req, res) => {
     db.connect();
     db.query(
-      /*"SELECT username FROM t_users WHERE users_id = ?"*/ "SELECT * FROM t_users",
-      /*[req.params.id],*/
+      "SELECT username FROM t_users WHERE users_id = ?",
+      [req.params.id],
       function (error, results, fields) {
-        res.render("admin", { accountName: "Admin", userList: results });
+        //res.render("admin", { accountName: "Admin", userList: results });
         if (error) throw error;
         if (results.length > 0) {
           const token = req.cookies.token;

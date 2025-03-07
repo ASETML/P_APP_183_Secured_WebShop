@@ -1,28 +1,28 @@
 const crypto = require("crypto");
 const db = require("../database/database");
 const jsonwebtoken = require("jsonwebtoken");
+const escapeHTML = require("escape-html");
 
 module.exports = {
   //Inscription
   register: (req, res) => {
-    console.log(req.body);
+    const password = escapeHTML(req.body.password);
+    const confirmPassword = escapeHTML(req.body.confirmPassword);
+    const username = escapeHTML(req.body.username);
 
-    if (req.body.password == req.body.confirmPassword) {
+    if (password === confirmPassword) {
       //Génération du sel
       const salt = crypto.randomBytes(8).toString("hex");
       console.log("salt: " + salt);
 
       //Hachage du mot de passe
-      const hash = crypto.hash(
-        "sha256",
-        req.body.password + salt + process.env.PEPPER
-      );
+      const hash = crypto.hash("sha256", password + salt + process.env.PEPPER);
       console.log("hash: " + hash);
 
       db.connect();
       db.query(
-        "INSERT INTO t_users (username, password, salt) VALUES (?, ?, ?)",
-        [req.body.username, hash, salt],
+        "INSERT INTO t_users (username, password, salt, admin) VALUES (?, ?, ?, ?)",
+        [username, hash, salt, false],
         function (error) {
           console.log(error);
           try {
@@ -40,15 +40,15 @@ module.exports = {
   login: (req, res) => {
     //Récupération des credentials
     console.log(req.body);
-    const username = req.body.username;
-    const password = req.body.password;
+    const username = escapeHTML(req.body.username);
+    const password = escapeHTML(req.body.password);
     let salt = "";
     let passwordHash = "";
 
     //Récupérations des hashs dans la DB
     db.connect();
     db.query(
-      "SELECT users_id, password, salt FROM t_users WHERE username = ?",
+      "SELECT users_id, password, salt, admin FROM t_users WHERE username = ?",
       [username],
       function (error, results, fields) {
         if (error) throw error;
@@ -67,16 +67,20 @@ module.exports = {
 
           //Vérification des credentials
           if (toCheck == passwordHash) {
+            console.log(results[0].admin);
             //Signature du token
             const token = jsonwebtoken.sign(
-              { username: username, id: results[0].users_id },
+              {
+                username: username,
+                id: results[0].users_id,
+                admin: results[0].admin,
+              },
               process.env.SECRETKEY,
               {
                 algorithm: "HS512",
                 expiresIn: "1h",
               }
             );
-
             res.cookie("token", token, { expire: Date.now() + 3600 });
             res.redirect("user/" + results[0].users_id);
           } else {

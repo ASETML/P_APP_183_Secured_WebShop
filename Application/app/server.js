@@ -18,18 +18,13 @@ const userRoute = require("./routes/User");
 app.use("/user", userRoute);
 
 const authRoute = require("./routes/Auth");
-
 app.use("/", authRoute);
+
+const adminRoute = require("./routes/Admin");
+app.use("/admin", adminRoute);
 
 app.get("/", (req, res) => {
   res.redirect("/login");
-});
-
-app.get("/admin", (req, res) => {
-  res.render("admin", {
-    accountName: "",
-    userList: [{ a: 1 }, { b: 2 }, { c: 3 }],
-  });
 });
 
 // Démarrage du serveur

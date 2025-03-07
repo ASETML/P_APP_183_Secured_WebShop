@@ -4,11 +4,13 @@
   <tr>
     <td>ID</td>
     <td>UserName</td>
+    <td>Admin</td>
   </tr>
   <% for (const user of userList) { %>
   <tr>
     <td><%= user.users_id %></td>
     <td><%= user.username %></td>
+    <td><%= user.admin %></td>
   </tr>
   <% } %>
 </table>
