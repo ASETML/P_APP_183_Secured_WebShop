@@ -10,3 +10,6 @@ CREATE TABLE t_users(
    PRIMARY KEY(users_id),
    UNIQUE(username)
 );
+
+CREATE USER 'webShop'@'localhost' IDENTIFIED BY 'V3RyS3cUrEP4$$wOrD';
+GRANT SELECT, INSERT ON db_webShop.t_users TO 'webShop'@'localhost';
