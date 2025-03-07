@@ -81,7 +81,7 @@ module.exports = {
                 expiresIn: "1h",
               }
             );
-            res.cookie("token", token, { expire: Date.now() + 3600 });
+            res.cookie("token", token, { httpOnly: true });
             res.redirect("user/" + results[0].users_id);
           } else {
             res.status(401).json({ error: "Invalid username or password" });
@@ -91,5 +91,11 @@ module.exports = {
         }
       }
     );
+  },
+
+  logout: (req, res) => {
+    //Supression du token
+    res.clearCookie("token");
+    res.redirect("/login");
   },
 };
