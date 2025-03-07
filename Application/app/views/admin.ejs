@@ -14,4 +14,19 @@
   </tr>
   <% } %>
 </table>
+
+<h2>Faite une recherche</h2>
+<form action="/admin" method="post">
+  <label for="username">Nom d'utilisateur</label>
+  <input type="text" id="username" name="username" required />
+  <label for="adminTrue">Admin</label>
+  <input type="radio" id="adminTrue" name="admin" value="1" />
+   <label for="adminFalse">Pas admin</label>  
+  <input type="radio" id="adminFalse" name="admin" value="0" />
+   <label for="adminBoth">Admin ou pas admin</label>  
+  <input type="radio" id="adminBoth" name="admin" value="%" />
+   
+  <input type="submit" id="submit" value="Rechercher" />
+</form>
+<a href="./register">Créer votre compte</a>
 <%- include( "footer.ejs")%>
