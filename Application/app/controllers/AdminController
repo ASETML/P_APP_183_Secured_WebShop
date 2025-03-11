@@ -22,7 +22,6 @@ module.exports = {
             });
           }
         } catch (error) {
-          console.log(error);
           //return res.status(401).json({ error: "Le token n'est pas valide" });
           return res.render("login", { accountName: "" });
         }

@@ -13,23 +13,15 @@ module.exports = {
     if (password === confirmPassword) {
       //Génération du sel
       const salt = crypto.randomBytes(8).toString("hex");
-      console.log("salt: " + salt);
 
       //Hachage du mot de passe
       const hash = crypto.hash("sha256", password + salt + process.env.PEPPER);
-      console.log("hash: " + hash);
 
       db.connect();
       db.query(
         "INSERT INTO t_users (username, password, salt, admin) VALUES (?, ?, ?, ?)",
         [username, hash, salt, false],
         function (error) {
-          console.log(error);
-          try {
-            if (error.code == "ER_DUP_ENTRY") {
-              console.log("Le username existe déjà");
-            }
-          } catch (err) {}
           return res.redirect("/login");
         }
       );
@@ -39,7 +31,6 @@ module.exports = {
   //Connexion
   login: (req, res) => {
     //Récupération des credentials
-    console.log(req.body);
     const username = escapeHTML(req.body.username);
     const password = escapeHTML(req.body.password);
     let salt = "";
@@ -55,9 +46,7 @@ module.exports = {
 
         if (results.length > 0) {
           salt = results[0].salt;
-          console.log("salt : " + salt);
           passwordHash = results[0].password;
-          console.log("password : " + passwordHash);
 
           //Hash des credentials
           const toCheck = crypto.hash(
@@ -67,7 +56,6 @@ module.exports = {
 
           //Vérification des credentials
           if (toCheck == passwordHash) {
-            console.log(results[0].admin);
             //Signature du token
             const token = jsonwebtoken.sign(
               {

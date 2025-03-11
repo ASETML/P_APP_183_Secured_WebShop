@@ -5,12 +5,11 @@ const auth = function (req, res, next) {
   const token = req.cookies.token;
   if (token) {
     try {
-      console.log(token);
       const decodedToken = jsonwebtoken.verify(token, process.env.SECRETKEY);
+      //Si on arrive la, c'est que le token est valide
       next();
     } catch (error) {
-      console.log(error);
-      //return res.status(401).json({ error: "Le token n'est pas valide" });
+      //Le token n'est pas valide, on revient à la page de login
       return res.render("login", { accountName: "" });
     }
   } else {
