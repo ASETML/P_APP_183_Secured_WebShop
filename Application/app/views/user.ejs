@@ -1,5 +1,8 @@
 <%- include( "header.ejs" )%>
 <h1><%= accountName %></h1>
 <p>Votre ID : <%= id %></p>
-<p><%= admin ? "Vous êtes administrateur." : "" %></p>
+<p>
+  <%= admin ? "Vous êtes administrateur. La page d'administration est disponible sur /admin" : "" %>
+</p>
+
 <%- include( "footer.ejs" )%>
