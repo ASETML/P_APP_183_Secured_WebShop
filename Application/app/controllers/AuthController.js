@@ -76,7 +76,8 @@ module.exports = {
             res.cookie("token", token, { httpOnly: true });
             res.redirect("user/" + results[0].users_id);
           } else {
-            res.status(401).json({ error: "Invalid username or password" });
+            res.render("login", { accountName: "" });
+            //res.status(401).json({ error: "Invalid username or password" });
           }
         } else {
           res.render("login", { accountName: "" });

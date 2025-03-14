@@ -26,7 +26,11 @@ module.exports = {
           return res.render("login", { accountName: "" });
         }
       } else {
-        res.status(401).json({ error: "No user" });
+        res.render("admin", {
+          accountName: "Admin",
+          userList: [{ username: "No Users" }],
+        });
+        //res.status(401).json({ error: "No user" });
       }
     });
   },
