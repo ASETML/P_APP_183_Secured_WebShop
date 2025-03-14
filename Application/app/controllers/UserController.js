@@ -13,12 +13,14 @@ module.exports = {
         res.render("user", {
           accountName: decodedToken.username,
           id: decodedToken.id,
+          admin: decodedToken.admin,
         });
       } else {
         //Il n'a pas le droit
         res.render("user", {
           accountName: "Forbidden",
           id: "403",
+          admin: "",
         });
       }
     } catch (error) {

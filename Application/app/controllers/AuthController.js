@@ -6,6 +6,7 @@ const escapeHTML = require("escape-html");
 module.exports = {
   //Inscription
   register: (req, res) => {
+    //Récupération des credentials
     const password = escapeHTML(req.body.password);
     const confirmPassword = escapeHTML(req.body.confirmPassword);
     const username = escapeHTML(req.body.username);
@@ -17,6 +18,7 @@ module.exports = {
       //Hachage du mot de passe
       const hash = crypto.hash("sha256", password + salt + process.env.PEPPER);
 
+      //Insertion de l'utilisateur dans la DB
       db.connect();
       db.query(
         "INSERT INTO t_users (username, password, salt, admin) VALUES (?, ?, ?, ?)",
@@ -44,6 +46,7 @@ module.exports = {
       function (error, results, fields) {
         if (error) throw error;
 
+        //Si il y a un utilisateur avec le nom dans la DB
         if (results.length > 0) {
           salt = results[0].salt;
           passwordHash = results[0].password;
@@ -69,6 +72,7 @@ module.exports = {
                 expiresIn: "1h",
               }
             );
+            //On met la token dans les cookies et on redirige l'utilisateur vers son profil
             res.cookie("token", token, { httpOnly: true });
             res.redirect("user/" + results[0].users_id);
           } else {
