@@ -9,7 +9,7 @@ module.exports = {
       const decodedToken = jsonwebtoken.verify(token, process.env.SECRETKEY);
       //L'id de l'utilisateur est le même que la page à laquelle il veut accéder
       if (decodedToken.id == req.params.id) {
-        //On affiche la page
+        //On affiche la page de compte
         res.render("user", {
           accountName: decodedToken.username,
           id: decodedToken.id,
